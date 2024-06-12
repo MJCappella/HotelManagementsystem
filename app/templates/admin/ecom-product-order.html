@@ -1,0 +1,83 @@
+﻿{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="content-body">
+	<div class="container-fluid">	
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-sm mb-0">
+								<thead>
+									<tr>
+										<th class="align-middle">
+											<div class="form-check custom-checkbox">
+												<input type="checkbox" class="form-check-input" id="checkAll">
+												<label class="form-check-label" for="checkAll"></label>
+											</div>
+										</th>
+										<th class="align-middle">Order</th>
+										<th class="align-middle">Email</th>
+										<th class="align-middle ">Date</th>
+										<th class="align-middle" style="min-width: 12.5rem;">Room booked</th>
+										<th class="align-middle text-center">Status</th>
+										<th class="align-middle text-end">Amount</th>
+										<th class="no-sort"></th>
+									</tr>
+								</thead>
+								<tbody id="orders">
+									{% for booking in bookings %}
+										<tr class="btn-reveal-trigger">
+											<td class="py-2">
+												<div class="form-check custom-checkbox checkbox-success">
+													<input type="checkbox" class="form-check-input" id="checkbox">
+													<label class="form-check-label" for="checkbox"></label>
+												</div>
+											</td>
+											<td class="py-2">
+												<a href="#"><strong>#{{ booking.id }}</strong></a> by <strong>{{ booking.user.username }}</strong>
+											</td>
+											<td><a href="mailto:{{ booking.user.email }}">{{ booking.user.email }}</a></td>
+											<td class="py-2">{{ booking.date_of_arrival.strftime("%d/%m/%Y") }}</td>
+											<td class="py-2">{{ booking.room.room_name }}</td>
+											<td class="py-2 text-end">
+												<span class="default statusSpan" data-booking-id="{{ booking.id }}">
+													{{ booking.status }}									
+											</td>
+											<td class="py-2 text-end">${{ booking.room.price }}</td>
+											<td class="py-2 text-end">
+												<div class="dropdown text-sans-serif">
+													<button class="btn btn-primary tp-btn-light sharp" type="button" id="order-dropdown-0"
+														data-bs-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+														<span>
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px"
+																height="18px" viewbox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<rect x="0" y="0" width="24" height="24"></rect>
+																	<circle fill="#000000" cx="5" cy="12" r="2"></circle>
+																	<circle fill="#000000" cx="12" cy="12" r="2"></circle>
+																	<circle fill="#000000" cx="19" cy="12" r="2"></circle>
+																</g>
+															</svg>
+														</span>
+													</button>
+													<div class="dropdown-menu ropdown-menu-end border py-0" aria-labelledby="order-dropdown-0">
+														<div class="py-2"><a class="dropdown-item approved" href="#" data-booking-id="{{ booking.id }}" onclick="updateBookingStatus(this, 'Approved')">Approve</a>
+															<a class="dropdown-item cancelled" href="#" data-booking-id="{{ booking.id }}" onclick="updateBookingStatus(this, 'Cancelled')">Cancel</a></div>
+														<div class="dropdown-divider"></div><a class="dropdown-item text-danger delete-item" href="#" id="deleteAnchor">Delete</a>
+													</div>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% block customJs %}<script src="{{ url_for('static', filename='admin/js/change-booked-status.js') }}"></script>{% endblock customJs %}
+{% endblock %}

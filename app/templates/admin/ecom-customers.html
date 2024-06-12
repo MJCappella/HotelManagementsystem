@@ -1,0 +1,86 @@
+﻿{% extends "admin/base.html" %}
+
+{% block content %}
+
+<div class="content-body">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-sm mb-0 table-striped">
+								<thead>
+									<tr>
+										<th class=" pe-3">
+											<div class="form-check custom-checkbox mx-2">
+												<input type="checkbox" class="form-check-input" id="checkAll">
+												<label class="form-check-label" for="checkAll"></label>
+											</div>
+										</th>
+										<th>Profile Image</th>
+										<th>Username</th>
+										<th>Email</th>
+										<th class=" ps-5" style="min-width: 200px;">Rooms booked by user
+										</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="customers">
+									{% for user in users %}
+									<tr class="btn-reveal-trigger">
+										<td class="py-2">
+											<div class="form-check custom-checkbox mx-2">
+												<input type="checkbox" class="form-check-input" id="checkbox{{ user.id }}">
+												<label class="form-check-label" for="checkbox{{ user.id }}"></label>
+											</div>
+										</td>
+										<td class="py-3">
+											<a href="#">
+												<div class="media d-flex align-items-center">
+													<div class="avatar avatar-xl me-2" style="height: 10vh;">
+														<div class=""><img class="rounded-circle" style="object-fit: contain;" src="{{ user.image }}" width="120" height="70" alt="{{ user.username }}">
+														</div>
+													</div>
+												</div>
+											</a>
+										</td>
+										<td class="py-2"><a class="myContent" id="myContent{{ user.id }}" href="">{{ user.username }}</a></td>
+										<td class="py-2"><a class="myContent" href="mailto:{{ user.email }}" id="myContent{{ user.id }}">{{ user.email }}</a></td>
+										<td class="py-2 ps-5 myContent" id="myContent{{ user.id }}">Rooms booked by user</td>
+										<td class="py-2 text-end">
+											<div class="dropdown">
+												<button class="btn btn-primary tp-btn-light sharp" type="button" data-bs-toggle="dropdown">
+													<span class="fs--1">
+														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewbox="0 0 24 24" version="1.1">
+															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																<rect x="0" y="0" width="24" height="24"></rect>
+																<circle fill="#000000" cx="5" cy="12" r="2"></circle>
+																<circle fill="#000000" cx="12" cy="12" r="2"></circle>
+																<circle fill="#000000" cx="19" cy="12" r="2"></circle>
+															</g>
+														</svg>
+													</span>
+												</button>
+												<div class="dropdown-menu dropdown-menu-end border py-0">
+													<div class="py-2">
+														<a class="dropdown-item edit-item" href="#!" onClick="makeEditable(this)">Edit</a>
+														<a class="dropdown-item save-item" href="#!">Save</a>
+														<a class="dropdown-item text-danger delete-item" href="#!">Delete</a>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>								
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% block customJs %}<script src="{{ url_for('static', filename='admin/js/edit-customers-info.js') }}"></script>{% endblock customJs %}
+{% endblock %}
